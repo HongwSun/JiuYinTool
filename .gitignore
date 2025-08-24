@@ -1,0 +1,6 @@
+# 排除IDE相关文件
+.idea/
+
+
+# 排除target目录
+target/
