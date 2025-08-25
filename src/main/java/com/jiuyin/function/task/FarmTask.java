@@ -1,6 +1,7 @@
 package com.jiuyin.function.task;
 
 import com.jiuyin.config.AppConfig;
+import com.jiuyin.model.SelectedWindow;
 import com.jiuyin.nativeapi.CLibrary;
 import com.jiuyin.util.ImageDebugUtils;
 import com.jiuyin.util.ImageRecognizer;
@@ -59,9 +60,10 @@ public class FarmTask extends BaseTask {
                 return;
             }
 
-            gameWindow = getHwnd();
+            // 获取选中的窗口句柄
+            gameWindow = SelectedWindow.getSelectedWindowHandle();
             if (gameWindow == null || !windowCapture.isWindowValid(gameWindow)) {
-                log("窗口无效");
+                log("窗口无效或未选择窗口");
                 return;
             }
 

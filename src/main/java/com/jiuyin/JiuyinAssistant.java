@@ -1,6 +1,6 @@
 package com.jiuyin;
 
-import com.jiuyin.ui.MainJpanel;
+import com.jiuyin.ui.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +14,6 @@ public class JiuyinAssistant {
         UIManager.put("CheckBox.font", new Font(fontName, Font.PLAIN, 14));
         UIManager.put("TabbedPane.font", new Font(fontName, Font.PLAIN, 14));
 
-        SwingUtilities.invokeLater(MainJpanel::new);
+        SwingUtilities.invokeLater(MainFrame::new);
     }
 }

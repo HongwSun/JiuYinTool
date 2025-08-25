@@ -2,6 +2,8 @@ package com.jiuyin.function.task;
 
 import com.jiuyin.config.AppConfig;
 import com.jiuyin.config.KeyConfig;
+import com.jiuyin.function.window.WindowHandle;
+import com.jiuyin.model.SelectedWindow;
 import com.jiuyin.nativeapi.CLibrary;
 import com.jiuyin.util.ImageRecognizer;
 import com.jiuyin.util.WindowCapture;
@@ -14,8 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.jiuyin.function.window.WindowHandle.getHwnd;
-
 /**
  * 团练授业任务实现类
  */
@@ -23,6 +23,7 @@ public class TuanLianTask extends BaseTask {
     private final WindowCapture windowCapture = new WindowCapture();
     private final ImageRecognizer imageRecognizer = new ImageRecognizer();
     private final Map<String, BufferedImage> templateCache = new HashMap<>();
+    private WindowHandle windowHandle = new WindowHandle();
     private static final double MATCH_THRESHOLD = AppConfig.getMatchThreshold();
     private static final long DEFAULT_DETECTION_INTERVAL = AppConfig.getDetectionInterval();
 
@@ -41,12 +42,14 @@ public class TuanLianTask extends BaseTask {
         completed = false;
 
         try {
-            WinDef.HWND hwnd = getHwnd();
+            // 获取选中的窗口句柄
+            WinDef.HWND hwnd = SelectedWindow.getSelectedWindowHandle();
             if (hwnd == null || !windowCapture.isWindowValid(hwnd)) {
-                log("窗口无效");
+                log("窗口无效或未选择窗口");
                 return;
             }
-            log("找到窗口: " + windowCapture.getWindowTitle(hwnd));
+            //激活窗口
+            windowHandle.activateGameWindow(hwnd);
             preloadTemplates();
 
 
@@ -82,7 +85,6 @@ public class TuanLianTask extends BaseTask {
      */
     private void monitorIcons(WinDef.HWND hwnd) throws InterruptedException {
         try {
-
             while (running) { // 限制检测次数，避免无限循环
                 BufferedImage screen = windowCapture.captureClientArea(hwnd);
                 if (screen == null) {
@@ -97,7 +99,7 @@ public class TuanLianTask extends BaseTask {
                     // 调用幽灵键鼠进行按键操作
                     CLibrary.INSTANCE.InputString(sequence);
                     // 按键后等待一段时间
-                    Thread.sleep(1000);
+                    Thread.sleep(8000);
                 } else {
                     log("未识别到按键序列");
                 }

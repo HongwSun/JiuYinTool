@@ -61,6 +61,24 @@ public class WindowHandle{
     }
 
     /**
+     * 获取所有游戏窗口句柄
+     * @return 窗口句柄列表
+     */
+    public static List<WinDef.HWND> getAllGameWindows() {
+        List<WinDef.HWND> windows = new ArrayList<>();
+        String procName = "fxgame.exe";
+        List<Integer> pids = getPidsByProcessName(procName);
+
+        for (int pid : pids) {
+            WinDef.HWND hwnd = getMainWindowHandleByPid(pid);
+            if (hwnd != null) {
+                windows.add(hwnd);
+            }
+        }
+        return windows;
+    }
+
+    /**
      * 获取窗口句柄(获取第一个窗口)
      * @return
      */
@@ -81,7 +99,7 @@ public class WindowHandle{
     /**
      * 激活游戏窗口
      */
-    private void activateGameWindow(WinDef.HWND gameWindow) {
+    public  void activateGameWindow(WinDef.HWND gameWindow) {
         try {
             if (gameWindow != null) {
                 User32.INSTANCE.SetForegroundWindow(gameWindow);
