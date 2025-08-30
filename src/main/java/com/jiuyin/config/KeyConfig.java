@@ -11,7 +11,7 @@ public class KeyConfig {
     public static final Map<String, String> KEY_TEMPLATES = new HashMap<>();
 
     static {
-        String basePath = System.getProperty("user.dir") + "/src/main/resources/img/tuanlian/";
+        String basePath =  "src/main/resources/img/tuanlian/";
         KEY_TEMPLATES.put("W", basePath + "pic_dance_up_grey.png");
         KEY_TEMPLATES.put("S", basePath + "pic_dance_down_grey.png");
         KEY_TEMPLATES.put("A", basePath + "pic_dance_left_grey.png");

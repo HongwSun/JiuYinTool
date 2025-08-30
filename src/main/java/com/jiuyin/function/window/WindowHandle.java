@@ -99,7 +99,7 @@ public class WindowHandle{
     /**
      * 激活游戏窗口
      */
-    public  void activateGameWindow(WinDef.HWND gameWindow) {
+    public static  void activateGameWindow(WinDef.HWND gameWindow) {
         try {
             if (gameWindow != null) {
                 User32.INSTANCE.SetForegroundWindow(gameWindow);

@@ -38,6 +38,7 @@ public class TaskQueuePanel extends JPanel {
 
         sequentialTaskComboBox = new JComboBox<>();
         sequentialTaskComboBox.addItem("团练任务");
+        sequentialTaskComboBox.addItem("种地任务");
         taskSelectPanel.add(sequentialTaskComboBox);
 
         btnAddToQueue = new JButton("添加到队列");

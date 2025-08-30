@@ -1,5 +1,7 @@
 package com.jiuyin.util;
 
+import com.jiuyin.function.opencv.ImageRecognizer;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,7 @@ import java.util.List;
  * 图像调试工具类
  */
 public class ImageDebugUtils {
-    private static final String DEFAULT_DEBUG_DIR = "debug_screenshots/";
+    private static final String DEFAULT_DEBUG_DIR = "src/main/resources/debug_screenshots/";
 
     /**
      * 保存图像到文件

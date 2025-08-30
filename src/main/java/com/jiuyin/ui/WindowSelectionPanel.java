@@ -3,7 +3,7 @@ package com.jiuyin.ui;
 import com.jiuyin.model.SelectedWindow;
 import com.jiuyin.function.window.WindowHandle;
 import com.jiuyin.util.LogUtils;
-import com.jiuyin.util.WindowCapture;
+import com.jiuyin.function.window.WindowCapture;
 import com.sun.jna.platform.win32.WinDef;
 
 import javax.swing.*;
@@ -53,6 +53,10 @@ public class WindowSelectionPanel extends JPanel {
                 windowComboBox.addItem((i + 1) + ": " + (title.isEmpty() ? "未知窗口" : title));
             }
             btnSelectWindow.setEnabled(true);
+
+            // 默认选中第一个窗口
+            windowComboBox.setSelectedIndex(0);
+            SelectedWindow.setSelectedWindowHandle(gameWindows.get(0));
         }
     }
 

@@ -1,5 +1,6 @@
-package com.jiuyin.function.task;
+package com.jiuyin.function.task.basetask;
 
+import com.jiuyin.function.task.basetask.Task;
 import com.jiuyin.util.LogUtils;
 import javax.swing.JTextArea;
 

@@ -29,7 +29,7 @@ public class HotkeyManager {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!mainFrame.isTaskRunning()) {
-                    mainFrame.getTaskExecutor().executeSingleTask("团练任务"); // 简化处理
+                    mainFrame.handleStartAction();
                 }
             }
         });
@@ -41,7 +41,7 @@ public class HotkeyManager {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (mainFrame.isTaskRunning()) {
-                    mainFrame.getTaskExecutor().cancelCurrentTask();
+                    mainFrame.handleStopAction();
                 }
             }
         });

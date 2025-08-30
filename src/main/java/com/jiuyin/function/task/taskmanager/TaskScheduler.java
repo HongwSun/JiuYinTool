@@ -1,11 +1,11 @@
-package com.jiuyin.function.task;
+package com.jiuyin.function.task.taskmanager;
 
+import com.jiuyin.function.task.basetask.Task;
 import com.jiuyin.util.LogUtils;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -14,16 +14,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskScheduler {
     private final JTextArea logArea;
-    private final ExecutorService taskThreadPool;
+    private final ExecutorService executorService;
     private Future<?> currentScheduler;
     private final List<Task> taskQueue = new ArrayList<>();
     private volatile boolean running = false;
 
-    public TaskScheduler(JTextArea logArea) {
+    public TaskScheduler(JTextArea logArea, ExecutorService executorService) {
         this.logArea = logArea;
-        this.taskThreadPool = Executors.newSingleThreadExecutor(
-                r -> new Thread(r, "Task-Scheduler-Thread")
-        );
+        this.executorService = executorService;
     }
 
     /**
@@ -55,7 +53,7 @@ public class TaskScheduler {
         }
 
         running = true;
-        currentScheduler = taskThreadPool.submit(() -> {
+        currentScheduler = executorService.submit(() -> {
             try {
                 for (int i = 0; i < taskQueue.size(); i++) {
                     if (!running) break;
@@ -104,24 +102,7 @@ public class TaskScheduler {
         LogUtils.writeLog(logArea, "已停止所有任务");
     }
 
-    /**
-     * 关闭线程池
-     */
-    public void shutdown() {
-        stop();
-        try {
-            taskThreadPool.shutdown();
-            if (!taskThreadPool.awaitTermination(30, TimeUnit.SECONDS)) {
-                taskThreadPool.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            taskThreadPool.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
-    }
-
     public boolean isRunning() {
         return running;
     }
 }
-

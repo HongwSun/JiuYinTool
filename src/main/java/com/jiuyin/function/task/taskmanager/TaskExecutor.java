@@ -1,8 +1,14 @@
-package com.jiuyin.function.task;
+package com.jiuyin.function.task.taskmanager;
 
+import com.jiuyin.function.task.basetask.Task;
+import com.jiuyin.function.task.farm.FarmTask;
+import com.jiuyin.function.task.tuanlian.TuanLianTask;
 import com.jiuyin.util.LogUtils;
 import javax.swing.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 任务执行器类，负责处理所有任务执行逻辑
@@ -10,10 +16,14 @@ import java.util.List;
 public class TaskExecutor {
     private final TaskScheduler taskScheduler;
     private final JTextArea logArea;
+    private final ExecutorService executorService;
 
     public TaskExecutor(JTextArea logArea) {
         this.logArea = logArea;
-        this.taskScheduler = new TaskScheduler(logArea);
+        this.executorService = Executors.newSingleThreadExecutor(
+                r -> new Thread(r, "Task-Executor-Thread")
+        );
+        this.taskScheduler = new TaskScheduler(logArea, executorService);
     }
 
     /**
@@ -25,7 +35,7 @@ public class TaskExecutor {
             taskScheduler.clearTasks();
             taskScheduler.addTask(task);
             LogUtils.writeLog(logArea, "准备执行单任务: " + taskType);
-            new Thread(() -> taskScheduler.start()).start();
+            executorService.execute(() -> taskScheduler.start());
         }
     }
 
@@ -43,7 +53,7 @@ public class TaskExecutor {
                 LogUtils.writeLog(logArea, "队列[" + (i + 1) + "]: " + taskTypes.get(i));
             }
         }
-        new Thread(() -> taskScheduler.start()).start();
+        executorService.execute(() -> taskScheduler.start());
     }
 
     /**
@@ -74,11 +84,21 @@ public class TaskExecutor {
      * 关闭线程池
      */
     public void shutdownThreadPool() {
-        taskScheduler.shutdown();
+        // 先停止任务调度
+        taskScheduler.stop();
+        // 然后关闭线程池
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     public boolean isTaskRunning() {
         return taskScheduler.isRunning();
     }
 }
-

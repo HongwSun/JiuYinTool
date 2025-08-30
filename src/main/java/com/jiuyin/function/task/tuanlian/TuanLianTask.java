@@ -1,12 +1,13 @@
-package com.jiuyin.function.task;
+package com.jiuyin.function.task.tuanlian;
 
 import com.jiuyin.config.AppConfig;
 import com.jiuyin.config.KeyConfig;
+import com.jiuyin.function.task.basetask.BaseTask;
 import com.jiuyin.function.window.WindowHandle;
 import com.jiuyin.model.SelectedWindow;
 import com.jiuyin.nativeapi.CLibrary;
-import com.jiuyin.util.ImageRecognizer;
-import com.jiuyin.util.WindowCapture;
+import com.jiuyin.function.opencv.ImageRecognizer;
+import com.jiuyin.function.window.WindowCapture;
 import com.sun.jna.platform.win32.WinDef;
 
 import javax.imageio.ImageIO;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * 团练授业任务实现类
+ * 团练授业
  */
 public class TuanLianTask extends BaseTask {
     private final WindowCapture windowCapture = new WindowCapture();
@@ -42,16 +43,13 @@ public class TuanLianTask extends BaseTask {
         completed = false;
 
         try {
-            // 获取选中的窗口句柄
             WinDef.HWND hwnd = SelectedWindow.getSelectedWindowHandle();
             if (hwnd == null || !windowCapture.isWindowValid(hwnd)) {
                 log("窗口无效或未选择窗口");
                 return;
             }
-            //激活窗口
             windowHandle.activateGameWindow(hwnd);
             preloadTemplates();
-
 
             log("开始监控按键序列...");
             monitorIcons(hwnd);
@@ -63,6 +61,9 @@ public class TuanLianTask extends BaseTask {
         }
     }
 
+    /**
+     * 加载图片模版
+     */
     private void preloadTemplates() {
         for (Map.Entry<String, String> entry : KeyConfig.KEY_TEMPLATES.entrySet()) {
             String key = entry.getKey();
@@ -85,7 +86,7 @@ public class TuanLianTask extends BaseTask {
      */
     private void monitorIcons(WinDef.HWND hwnd) throws InterruptedException {
         try {
-            while (running) { // 限制检测次数，避免无限循环
+            while (running) {
                 BufferedImage screen = windowCapture.captureClientArea(hwnd);
                 if (screen == null) {
                     log("截图失败，等待重试...");
@@ -96,15 +97,12 @@ public class TuanLianTask extends BaseTask {
                 String sequence = recognizeIconsWithHighThreshold(screen);
                 if (!sequence.isEmpty()) {
                     log("识别到按键序列: " + sequence);
-                    // 调用幽灵键鼠进行按键操作
                     CLibrary.INSTANCE.InputString(sequence);
-                    // 按键后等待一段时间
-                    Thread.sleep(8000);
+                    Thread.sleep(1000);
                 } else {
                     log("未识别到按键序列");
                 }
                 Thread.sleep(500);
-
             }
         } catch (Exception e) {
             log("监控过程中发生异常: " + e.getMessage());

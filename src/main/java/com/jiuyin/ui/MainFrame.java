@@ -1,7 +1,7 @@
 package com.jiuyin.ui;
 
 import com.jiuyin.config.AppConfig;
-import com.jiuyin.function.task.TaskExecutor;
+import com.jiuyin.function.task.taskmanager.TaskExecutor;
 import com.jiuyin.util.LogUtils;
 import com.jiuyin.nativeapi.CLibrary;
 
@@ -131,7 +131,7 @@ public class MainFrame extends JFrame {
         updateButtonStates();
     }
 
-    private void handleStartAction() {
+    public void handleStartAction() {
         if (windowSelectionPanel.getSelectedWindowHandle() == null) {
             LogUtils.writeLog(logPanel.getLogArea(), "请先选择一个窗口");
             return;
@@ -152,7 +152,7 @@ public class MainFrame extends JFrame {
         updateButtonStates();
     }
 
-    private void handleStopAction() {
+    public void handleStopAction() {
         taskExecutor.cancelCurrentTask();
         isTaskRunning = false;
         updateButtonStates();

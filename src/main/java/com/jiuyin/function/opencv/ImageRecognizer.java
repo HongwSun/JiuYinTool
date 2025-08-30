@@ -1,4 +1,4 @@
-package com.jiuyin.util;
+package com.jiuyin.function.opencv;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -6,13 +6,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.imgcodecs.Imgcodecs;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,9 +108,6 @@ public class ImageRecognizer {
     /**
      * 转换 BufferedImage 为 OpenCV Mat
      */
-    /**
-     * 转换 BufferedImage 为 OpenCV Mat（修复版）
-     */
     private Mat bufferedImageToMat(BufferedImage image) {
         try {
             // 确保图像是合适的类型
@@ -144,55 +136,4 @@ public class ImageRecognizer {
             return new Mat();
         }
     }
-
-    /**
-     * 调试方法：可视化匹配结果
-     */
-    public void debugVisualizeMatches(BufferedImage source, BufferedImage template,
-                                      List<MatchResult> matches, String outputPath) {
-        BufferedImage markedImage = ImageDebugUtils.markMatchPositions(source, matches, template);
-        ImageDebugUtils.saveImage(markedImage, outputPath);
-    }
-
-    /**
-     * 调试方法：测试不同阈值
-     */
-    public void debugTestThresholds(BufferedImage source, BufferedImage template,
-                                    double[] thresholds, String outputDir) {
-        for (double threshold : thresholds) {
-            List<MatchResult> matches = findTemplateInRegion(
-                    source, template, 0, 0, source.getWidth(), source.getHeight(),
-                    threshold, 5, 4, "debug"
-            );
-
-            if (!matches.isEmpty()) {
-                String outputPath = outputDir + "threshold_" + threshold + ".png";
-                debugVisualizeMatches(source, template, matches, outputPath);
-            }
-        }
-    }
-
-    /**
-     * 调试方法：保存中间处理图像
-     */
-    public void debugSaveProcessingSteps(BufferedImage source, BufferedImage template, String outputDir) {
-        // 保存源图像
-        ImageDebugUtils.saveImage(source, outputDir + "source.png");
-
-        // 保存模板图像
-        ImageDebugUtils.saveImage(template, outputDir + "template.png");
-
-        // 转换并保存处理后的图像
-        try {
-            Mat sourceMat = bufferedImageToMat(source);
-            Mat templateMat = bufferedImageToMat(template);
-
-            // 这里可以添加更多调试步骤...
-
-        } catch (Exception e) {
-            System.out.println("调试步骤保存失败: " + e.getMessage());
-        }
-    }
-
-
 }

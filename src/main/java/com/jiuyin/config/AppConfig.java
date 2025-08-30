@@ -7,8 +7,8 @@ import java.util.*;
  * 通用配置文件管理
  */
 public class AppConfig {
-    private static final String CONFIG_FILE = "app.config";
-    private static final String SEQUENCES_DIR = "sequences/";
+    private static final String CONFIG_FILE = "src/main/resources/config/app.config";
+    private static final String SEQUENCES_DIR = "src/main/resources/config/sequences/";
     private static final Properties properties = new Properties();
 
     // 默认配置值

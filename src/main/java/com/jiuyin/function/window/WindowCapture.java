@@ -1,4 +1,4 @@
-package com.jiuyin.util;
+package com.jiuyin.function.window;
 
 import com.sun.jna.platform.win32.GDI32;
 import com.sun.jna.platform.win32.User32;
@@ -11,7 +11,6 @@ import java.awt.image.DataBufferInt;
 
 
 /**
- * 窗口截图工具类
  * 根据窗口句柄进行屏幕截图
  */
 public class WindowCapture {

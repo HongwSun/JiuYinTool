@@ -1,25 +1,24 @@
 package test;
 
 
+import com.jiuyin.function.opencv.ImageRecognizer;
+import com.jiuyin.function.window.WindowCapture;
+import com.jiuyin.function.window.WindowHandle;
+import com.jiuyin.model.SelectedWindow;
 import com.jiuyin.nativeapi.CLibrary;
+import com.jiuyin.util.ImageDebugUtils;
+import com.sun.jna.platform.win32.WinDef;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 public class Test {
 
+    public static void main(String[] args) throws InterruptedException, IOException {
 
-
-    public static void main(String[] args) {
-//        System.out.println(System.getProperty("user.dir") + "/src/main/resources/img/tuanlian/");
-
-        System.out.println("移动鼠标到指定坐标:"+CLibrary.INSTANCE.MoveMouseTo(567,712));
-//        System.out.println((int)(991* (500.0 / 991)));
-//        System.out.println((int)(991 * (100.0 / 991)));
-
-
-
-//         CLibrary.INSTANCE.printf("Hello, World!");
-
-
-//        System.out.println("获取设备型号:"+ CLibrary.INSTANCE.GetModel());
 
 	/*
     //获取设备型号

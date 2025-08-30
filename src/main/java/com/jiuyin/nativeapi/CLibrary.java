@@ -3,7 +3,6 @@ package com.jiuyin.nativeapi;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
-
 public interface CLibrary extends Library {
     CLibrary INSTANCE = (CLibrary) Native.loadLibrary(
             System.getProperty("user.dir") + "/src/main/resources/dll/igkmlib64.dll",

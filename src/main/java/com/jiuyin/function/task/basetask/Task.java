@@ -1,4 +1,4 @@
-package com.jiuyin.function.task;
+package com.jiuyin.function.task.basetask;
 
 /**
  * 任务接口
